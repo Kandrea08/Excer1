@@ -1,0 +1,114 @@
+package com.pruebas.proyect2;
+import java.util.Scanner;
+
+public class Matricula {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int opcion;
+
+        do {
+            System.out.println("Bienvenido a la matrícula de estudiantes");
+            System.out.println("Seleccione una opción:");
+            System.out.println("1. Sistemas");
+            System.out.println("2. Psicología");
+            System.out.println("3. Medicina");
+            System.out.println("4. Salir");
+
+            opcion = scanner.nextInt();
+
+            switch (opcion) {
+                case 1:
+                    matricular("Sistemas", scanner);
+                    break;
+                case 2:
+                    matricular("Psicología", scanner);
+                    break;
+                case 3:
+                    matricular("Medicina", scanner);
+                    break;
+                case 4:
+                    System.out.println("Saliendo del programa...");
+                    break;
+                default:
+                    System.out.println("Opción inválida. Por favor, seleccione nuevamente.");
+            }
+        } while (opcion != 4);
+    }
+
+    public static void matricular(String carrera, Scanner scanner) {
+        System.out.println("Ha seleccionado la carrera: " + carrera);
+        System.out.println("Por favor, ingrese los datos del estudiante:");
+        System.out.print("Nombres: ");
+        String nombres = scanner.next();
+        System.out.print("Apellidos: ");
+        String apellidos = scanner.next();
+        System.out.print("Documento: ");
+        String documento = scanner.next();
+        System.out.print("Dirección: ");
+        String direccion = scanner.next();
+        System.out.print("Teléfono: ");
+        String telefono = scanner.next();
+        scanner.nextLine();
+        System.out.print("Semestre actual: ");
+        int semestre = scanner.nextInt();
+        System.out.print("¿El estudiante tiene materias aplazadas? (S/N): ");
+        char tieneMateriasAplazadas = scanner.next().charAt(0);
+        int materiasAplazadas = 0;
+
+        if (tieneMateriasAplazadas == 'S' || tieneMateriasAplazadas == 's') {
+            System.out.print("Ingrese la cantidad de materias aplazadas: ");
+            materiasAplazadas = scanner.nextInt();
+        }
+
+        double costoMatricula = calcularCostoMatricula(semestre, materiasAplazadas);
+
+        imprimirRecibo(nombres, apellidos, documento, direccion, telefono, carrera, semestre, materiasAplazadas, costoMatricula);
+    }
+
+    public static double calcularCostoMatricula(int semestre, int materiasAplazadas) {
+    double costoBase = 1500.0;
+    double costoPorCredito;
+
+    if (semestre >= 5) {
+        // Aumento del 5% a partir del quinto semestre
+        costoBase *= 1.05;
+    }
+
+    if (semestre <= 3) {
+        costoPorCredito = 20.0;
+    } else if (semestre <= 6) {
+        costoPorCredito = 25.0;
+    } else {
+        costoPorCredito = 30.0;
+    }
+
+    double costoMatricula;
+
+    if (materiasAplazadas > 0) {
+        costoMatricula = costoBase + (materiasAplazadas * costoPorCredito);
+    } else {
+        costoMatricula = costoBase;
+    }
+
+    return costoMatricula;
+}
+
+
+    public static void imprimirRecibo(String nombres, String apellidos, String documento, String direccion,
+                                      String telefono, String carrera, int semestre, int materiasAplazadas,
+                                      double costoMatricula) {
+        System.out.println("------- RECIBO DE INSCRIPCIÓN -------");
+        System.out.println("Nombres: " + nombres);
+        System.out.println("Apellidos: " + apellidos);
+        System.out.println("Documento: " + documento);
+        System.out.println("Dirección: " + direccion);
+        System.out.println("Teléfono: " + telefono);
+        System.out.println("Carrera: " + carrera);
+        System.out.println("Semestre: " + semestre);
+        System.out.println("Materias aplazadas: " + materiasAplazadas);
+        System.out.println("Costo de matrícula: $" + costoMatricula);
+        System.out.println("-------------------------------------");
+    }
+}
+
